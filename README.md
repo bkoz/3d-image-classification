@@ -12,6 +12,18 @@ by Alexander Sack that is explained well.
 
 ### Steps
 
+#### Inference Microservice Setup
+
+Install the ODH operator
+
+Create a kfdef in the `ml-mon` project.
+
+```
+oc apply -f grafana-prometheus-datasource.yaml
+oc apply -f resources/grafana-prometheus-datasource.yaml
+oc apply -f resources/prediction-analytics-seldon-core-1.2.2.yaml 
+```
+
 #### Create and start a new build.
 
 ```
@@ -27,6 +39,13 @@ Edit `mymodel-seldon-deploy.yaml` to match the environment and deploy.
 oc apply -f resources/mymodel-seldon-deploy.yaml
 
 oc expose svc <svc-name>
+```
+
+#### Deploy the Seldon model service.
+
+```
+oc apply -f resources/mymodel-seldon-deploy.yaml 
+oc apply -f resources/seldon-mymodel-servicemonitor.yaml
 ```
 
 To trigger a redeploy after a new build. This does not always work so the pod may have to be deleted.
