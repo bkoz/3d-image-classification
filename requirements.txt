@@ -1,10 +1,6 @@
 Flask
 gunicorn
 keras
-tensorflow
+tensorflow==2.4.1
 # seldon-core==1.2.2
 seldon-core
-nibabel 
-scipy 
-matplotlib 
-tensorflow
