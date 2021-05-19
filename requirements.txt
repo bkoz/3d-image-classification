@@ -1,0 +1,6 @@
+Flask
+gunicorn
+keras
+tensorflow
+# seldon-core==1.2.2
+seldon-core
