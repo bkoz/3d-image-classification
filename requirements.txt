@@ -4,3 +4,7 @@ keras
 tensorflow
 # seldon-core==1.2.2
 seldon-core
+nibabel 
+scipy 
+matplotlib 
+tensorflow
