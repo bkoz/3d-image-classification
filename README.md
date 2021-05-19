@@ -1,4 +1,7 @@
-# seldon s2i
+# Classification of 3D Medical images 
+
+## Deployed with seldon using OpenShift s2i
+
 Deploy a custom image using OpenShift s2i and Seldon. 
 Based on [Brian's blog post](https://www.openshift.com/blog/serving-machine-learning-models-on-openshift-part-1). 
 Also read this [medium article](https://towardsdatascience.com/to-serve-man-60246a82d953) 
@@ -28,6 +31,29 @@ To trigger a redeploy after a new build. This does not always work so the pod ma
 
 ```
 oc patch deployment <deployment-name> -p "{\"spec\": {\"template\": {\"metadata\": { \"labels\": {  \"redeploy\": \"$(date +%s)\"}}}}}"
+```
+
+Test the prometheus endpoint.
+
+```
+curl -X GET $(oc get route detection-redhat -o jsonpath='{.spec.host}')/prometheus
+```
+
+### Prometheus and Grafana configuration.
+
+Create a Prometheus data source.
+```
+oc apply -f resources/grafana-prometheus-datasource.yaml
+```
+
+Create a Grafana dashboard.
+```
+oc apply -f resources/prediction-analytics-seldon-core-1.2.2.yaml
+```
+
+Create a service monitor.
+```
+oc apply -f resources/seldon-service-monitor.yml
 ```
 
 Testing
