@@ -1,6 +1,8 @@
 # Classification of 3D Medical images 
 
-## Deployed with seldon using OpenShift s2i
+## A simple Red Hat Data Science Demo on OpenDataHub
+
+### Deployed with seldon using OpenShift s2i
 
 Deploy a custom image using OpenShift s2i and Seldon. 
 Based on [Brian's blog post](https://www.openshift.com/blog/serving-machine-learning-models-on-openshift-part-1). 
@@ -8,9 +10,9 @@ Also read this [medium article](https://towardsdatascience.com/to-serve-man-6024
 by Alexander Sack that is explained well. 
 [Additional](https://docs.primehub.io/docs/model-deployment-tutorial-package-image) info.
 
-## Steps
+### Steps
 
-### Create and start a new build.
+#### Create and start a new build.
 
 ```
 oc new-build --strategy docker --docker-image registry.redhat.io/ubi8/python-36 --name mymodel -l app=mymodel --binary
