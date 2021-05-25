@@ -107,3 +107,18 @@ seldon-core-microservice MyModel REST --service-type MODEL
 
 curl -X POST -H 'Content-Type: application/json' -d '{"data": { "ndarray": [[1,2,3,4]]}}' http://localhost:5000/api/v1.0/predictions
 ```
+
+#### Client Notebook Configuration 
+
+Login to [OpenDataHub on the Operate-First Cloud](https://odh.operate-first.cloud/)
+
+Run JupyterHub.
+
+Start a terminal.
+
+Clone this repo.
+
+Open the [first notebook](https://github.com/bkoz/3d-image-classification/blob/master/01-inference-3d-image-classification.ipynb)
+
+
+

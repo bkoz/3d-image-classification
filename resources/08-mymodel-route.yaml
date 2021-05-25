@@ -1,2 +1,19 @@
-# Route
-#
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app.kubernetes.io/managed-by: seldon-core
+    default: "true"
+    model: "true"
+    seldon-app-svc: mymodel-mygroup-classifier
+    seldon-deployment-id: mymodel
+  name: mymodel-mygroup-classifier
+  namespace: ml-mon
+spec:
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: mymodel-mygroup-classifier
+    weight: 100
+  wildcardPolicy: None
