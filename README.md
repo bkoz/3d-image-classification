@@ -1,22 +1,29 @@
 # Classification of 3D Medical images 
 
-## A simple Red Hat Data Science Demo on OpenDataHub
+## A basic data science demo using OpenDataHub and OpenShift Container Platform
 
-### Deployed with seldon using OpenShift s2i
-
-Deploy a custom image using OpenShift s2i and Seldon. 
-Based on [Brian's blog post](https://www.openshift.com/blog/serving-machine-learning-models-on-openshift-part-1). 
-Also read this [medium article](https://towardsdatascience.com/to-serve-man-60246a82d953) 
-by Alexander Sack that is explained well. 
-[Additional](https://docs.primehub.io/docs/model-deployment-tutorial-package-image) info.
+Based on work by [Hasib Zunair](https://keras.io/examples/vision/3D_image_classification/)
 
 ### Steps
 
-#### Inference Microservice Setup
-
 Install the ODH operator
 
-Create a kfdef in the `ml-mon` project.
+Using the CLI:
+
+```
+oc apply -f resources/odh-operator-sub.yaml
+```
+
+Wait for the operator pod to deploy.
+
+Create a project called `ml-mon` then create an OpenDataHub `kfdef`.
+
+Wait for the OpenDataHub, Jupyter, Seldon, Grafana and Prometheus pods to deploy.
+
+```
+oc new-project ml-mon
+oc apply -f resources/opendatahub-kfdef-seldon-prometheus-grafana.yaml
+```
 
 ```
 oc apply -f grafana-prometheus-datasource.yaml
@@ -40,6 +47,14 @@ oc apply -f resources/mymodel-seldon-deploy.yaml
 
 oc expose svc <svc-name>
 ```
+
+### Deploy with seldon using OpenShift s2i
+
+Deploy a custom image using OpenShift s2i and Seldon. 
+Based on [Brian's blog post](https://www.openshift.com/blog/serving-machine-learning-models-on-openshift-part-1). 
+Also read this [medium article](https://towardsdatascience.com/to-serve-man-60246a82d953) 
+by Alexander Sack that is explained well. 
+[Additional](https://docs.primehub.io/docs/model-deployment-tutorial-package-image) info.
 
 #### Deploy the Seldon model service.
 
