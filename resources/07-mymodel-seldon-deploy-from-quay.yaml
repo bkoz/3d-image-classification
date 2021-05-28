@@ -1,0 +1,22 @@
+apiVersion: machinelearning.seldon.io/v1
+kind: SeldonDeployment
+annotations:
+metadata:
+  name: mymodel
+spec:
+  name: mygroup
+  predictors:
+    - componentSpecs:
+      - spec:
+          containers:
+            - image: >-
+                quay.io/bkozdemb/3d-image-classification
+              name: classifier
+      graph:
+        children: []
+        endpoint:
+          type: REST
+        name: classifier
+        type: MODEL
+      name: mygroup
+      replicas: 1
