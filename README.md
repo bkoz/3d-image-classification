@@ -4,7 +4,103 @@
 
 Based on work by [Hasib Zunair](https://keras.io/examples/vision/3D_image_classification/)
 
+### This is work in progress so the following documentation will not work.
+
 ### Steps
+
+#### Server side configuration
+
+1) Create the project
+```
+oc create -f 01-namespace.yaml   
+oc project ml-mon
+```
+
+2) Create the ODH operator
+```
+oc create -f 02-odh-operator-subscription.yaml
+
+oc get pods -n openshift-operators
+
+NAME                                   READY   STATUS    RESTARTS   AGE
+opendatahub-operator-5b6cb986d-48zxr   1/1     Running   0          3m22s
+```
+
+3) Create the ODH kfdef and wait for the pods to run.
+```
+oc create -f 03-opendatahub-kfdef-seldon-prometheus-grafana.yaml
+
+oc get pods
+
+grafana-deployment-5f6949bc8-ww97f              1/1     Running   0          7m10s
+grafana-operator-cd65d6644-79mhv                1/1     Running   0          7m39s
+odh-dashboard-764cbcb544-n8ff6                  1/1     Running   0          16m
+odh-dashboard-764cbcb544-qfhkk                  1/1     Running   0          16m
+prometheus-odh-monitoring-0                     2/2     Running   1          3m12s
+prometheus-odh-monitoring-1                     2/2     Running   1          3m11s
+prometheus-operator-578ccd6c45-dmfbg            1/1     Running   0          3m21s
+seldon-controller-manager-6d5d5d4d8-9pfhx       1/1     Running   0          7m37s
+```
+
+4, 5 ,6) Configure Prometheus and Grafana 
+```
+oc create -f 04-grafana-prometheus-datasource.yaml             
+oc create -f 05-prediction-analytics-seldon-core-1.2.2.yaml
+oc create -f 06-seldon-mymodel-servicemonitor.yaml
+```
+
+7) Create and wait for the classifier pods to become ready before creating the route in the next step. This is important
+because (2) services are created by the Seldon deployer.
+
+```
+oc create -f 07-mymodel-seldon-deploy-from-quay.yaml
+```
+
+```
+oc get pods
+
+$ oc get pods
+
+NAME                                            READY   STATUS    RESTARTS   AGE
+mymodel-mygroup-0-classifier-57647887d9-98qqb   2/2     Running   0          118s
+
+oc get svc
+
+NAME                         TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)             AGE
+mymodel-mygroup              ClusterIP   10.217.5.143   <none>        8000/TCP,5001/TCP   20s
+mymodel-mygroup-classifier   ClusterIP   10.217.4.127   <none>        9000/TCP            2m4s
+```
+
+8) Create the route.
+```
+oc create -f 08-mymodel-route.yaml
+```
+
+Curl the prometheus endpoint and confirm it is able to scrape metrics from the classifier pod.
+
+```
+curl -X GET $(oc get route mymodel-mygroup -o jsonpath='{.spec.host}')/prometheus
+
+promhttp_metric_handler_requests_total{code="200"} 34
+```
+
+Make a few predictions to trigger Seldon activity, wait 30 seconds then try the same curl as above. There should be some
+Seldon entries now.
+
+```
+curl -X GET $(oc get route mymodel-mygroup -o jsonpath='{.spec.host}')/prometheus
+
+seldon_api_executor_server_requests_seconds_sum{code="200",deployment_name="mymodel",method="post",predictor_name="mygroup",predictor_version="",service="predictions"} 4.714845908
+seldon_api_executor_server_requests_seconds_count{code="200",deployment_name="mymodel",method="post",predictor_name="mygroup",predictor_version="",service="predictions"} 5
+```
+
+Connect to Prometheus and query for seldon entries. If they appear then Grafana should pick up the activity.
+
+```
+$ curl <classifier-route>/prometheus
+
+seldon_api_executor_server_requests_seconds_bucket{code="200",deployment_name="mymodel",method="post",predictor_name="mygroup",predictor_version="",service="predictions",le="0.005"} 0
+```
 
 Install the ODH operator (v.1.0.10)
 
@@ -25,7 +121,7 @@ oc new-project ml-mon
 oc apply -f resources/03-opendatahub-kfdef-seldon-prometheus-grafana.yaml
 ```
 
-Wait for the operators and pods to deploy. This could take several minutes.
+Wait for the operators and pods to deploy. This could take 8-10 minutes.
 
 Grafana v3.10.0
 Prometheus v0.37.0
