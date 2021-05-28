@@ -125,6 +125,13 @@ prometheus-operator-578ccd6c45-dmfbg            1/1     Running   0          3m2
 seldon-controller-manager-6d5d5d4d8-9pfhx       1/1     Running   0          7m37s
 ```
 
+Curl the prometheus endpoint and confirm it is able to scrape metrics from the classifier pod.
+
+```
+$ curl <classifier-route>/prometheus
+
+seldon_api_executor_server_requests_seconds_bucket{code="200",deployment_name="mymodel",method="post",predictor_name="mygroup",predictor_version="",service="predictions",le="0.005"} 0
+```
 #### Client Notebook Configuration 
 
 Login to [OpenDataHub on the Operate-First Cloud](https://odh.operate-first.cloud/)
