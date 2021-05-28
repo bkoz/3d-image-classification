@@ -92,12 +92,12 @@ promhttp_metric_handler_requests_total{code="200"} 34
 ### Client Configuration
 
 Login to JupyterHub
-- start the JupyterHub server using the `generic-data-science` notebook image.
+- start the JupyterHub server using the `s2i-generic-data-science` notebook image.
 - create a terminal
 - Clone this github repo
 - Run the `01-inference-3d-image-classification` notebook.
-- Find the notebook cell with the `url` variable and change it to point to the route that was created.
-  - $(oc get route mymodel-mygroup -o jsonpath='{.spec.host}')/api/v1.0/prediction
+- Find the notebook cell with `predict` function and modify the `url` variable to point to the route that was created.
+  - `echo $(oc get route mymodel-mygroup -o jsonpath='{.spec.host}')/api/v1.0/predictions`
 - Run the notebook and make a few predictions.
 
 Make a few predictions to trigger Seldon activity, wait 30 seconds, then try the same curl as above. There should be some
