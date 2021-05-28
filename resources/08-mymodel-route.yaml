@@ -5,15 +5,15 @@ metadata:
     app.kubernetes.io/managed-by: seldon-core
     default: "true"
     model: "true"
-    seldon-app-svc: mymodel-mygroup-classifier
+    seldon-app-svc: mymodel-mygroup
     seldon-deployment-id: mymodel
-  name: mymodel-mygroup-classifier
+  name: mymodel-mygroup
   namespace: ml-mon
 spec:
   port:
     targetPort: http
   to:
     kind: Service
-    name: mymodel-mygroup-classifier
+    name: mymodel-mygroup
     weight: 100
   wildcardPolicy: None
