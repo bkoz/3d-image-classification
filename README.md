@@ -114,16 +114,15 @@ The following pods should be running:
 ```
 $ oc get pods
 
-NAME                                            READY   STATUS    RESTARTS   AGE
-grafana-deployment-fb5657686-kns66              1/1     Running   0          13m
-grafana-operator-75b94c96cd-hr8wd               1/1     Running   0          16m
-mymodel-mygroup-0-classifier-679ff4f5cd-sgjn9   2/2     Running   0          10m
-odh-dashboard-58767bd547-glb2d                  1/1     Running   0          19m
-odh-dashboard-58767bd547-rg72q                  1/1     Running   0          19m
-prometheus-odh-monitoring-0                     2/2     Running   1          15m
-prometheus-odh-monitoring-1                     2/2     Running   1          15m
-prometheus-operator-6c567bbd59-df6ff            1/1     Running   0          15m
-seldon-controller-manager-7878569767-qt2l7      1/1     Running   0          16m
+grafana-deployment-5f6949bc8-ww97f              1/1     Running   0          7m10s
+grafana-operator-cd65d6644-79mhv                1/1     Running   0          7m39s
+mymodel-mygroup-0-classifier-57647887d9-78lmg   2/2     Running   0          114s
+odh-dashboard-764cbcb544-n8ff6                  1/1     Running   0          16m
+odh-dashboard-764cbcb544-qfhkk                  1/1     Running   0          16m
+prometheus-odh-monitoring-0                     2/2     Running   1          3m12s
+prometheus-odh-monitoring-1                     2/2     Running   1          3m11s
+prometheus-operator-578ccd6c45-dmfbg            1/1     Running   0          3m21s
+seldon-controller-manager-6d5d5d4d8-9pfhx       1/1     Running   0          7m37s
 ```
 
 #### Client Notebook Configuration 
