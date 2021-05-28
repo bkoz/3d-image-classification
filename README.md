@@ -6,12 +6,12 @@ Based on work by [Hasib Zunair](https://keras.io/examples/vision/3D_image_classi
 
 ### Steps
 
-Install the ODH operator
+Install the ODH operator (v.1.0.10)
 
 Using the CLI:
 
 ```
-oc apply -f resources/odh-operator-sub.yaml
+oc apply -f resources/02-odh-operator-sub.yaml
 ```
 
 Wait for the operator pod to deploy.
@@ -22,7 +22,24 @@ Wait for the OpenDataHub, Jupyter, Seldon, Grafana and Prometheus pods to deploy
 
 ```
 oc new-project ml-mon
-oc apply -f resources/opendatahub-kfdef-seldon-prometheus-grafana.yaml
+oc apply -f resources/03-opendatahub-kfdef-seldon-prometheus-grafana.yaml
+```
+
+Wait for the operators and pods to deploy. This could take several minutes.
+
+Grafana v3.10.0
+Prometheus v0.37.0
+Seldon v.1.2.1
+
+```
+grafana-deployment-5f6949bc8-ww97f              1/1     Running   0          7m10s
+grafana-operator-cd65d6644-79mhv                1/1     Running   0          7m39s
+odh-dashboard-764cbcb544-n8ff6                  1/1     Running   0          16m
+odh-dashboard-764cbcb544-qfhkk                  1/1     Running   0          16m
+prometheus-odh-monitoring-0                     2/2     Running   1          3m12s
+prometheus-odh-monitoring-1                     2/2     Running   1          3m11s
+prometheus-operator-578ccd6c45-dmfbg            1/1     Running   0          3m21s
+seldon-controller-manager-6d5d5d4d8-9pfhx       1/1     Running   0          7m37s
 ```
 
 ```
