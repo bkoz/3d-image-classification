@@ -4,11 +4,9 @@
 
 Based on work by [Hasib Zunair](https://keras.io/examples/vision/3D_image_classification/)
 
-### Inference Demo
-
 ![Demo Workflow](images/demo-workflow.jpg "Workflow")
 
-#### Server side configuration
+### Server side configuration
 
 Login to the [OpenShift Learning Portal](https://learn.openshift.com). Near the the bottom of the page, choose **OpenShift Playgrounds** -> **OpenShift 4.7 Playground**.
 
