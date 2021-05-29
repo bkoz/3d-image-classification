@@ -82,7 +82,7 @@ NAME                                            READY   STATUS    RESTARTS   AGE
 mymodel-mygroup-0-classifier-57647887d9-98qqb   2/2     Running   0          118s
 ```
 ```
-oc get svc
+oc get services
 ```
 ```
 NAME                         TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)             AGE
@@ -98,8 +98,10 @@ oc create -f 08-mymodel-route.yaml
 Curl the prometheus endpoint and confirm it is able to scrape metrics from the classifier pod.
 ```
 curl -X GET $(oc get route mymodel-mygroup -o jsonpath='{.spec.host}')/prometheus
-
-promhttp_metric_handler_requests_total{code="200"} 34
+```
+```
+...
+promhttp_metric_handler_requests_total{code="200"} 5
 ```
 
 ### Client Configuration
@@ -124,6 +126,8 @@ seldon_api_executor_server_requests_seconds_count{code="200",deployment_name="my
 ```
 
 Open The Prometheus and Grafana Dashboards to visualize the API activity.
+
+![Grafana](images/grafana.jpg "Grafana")
 
 ## Developer Notes
 
