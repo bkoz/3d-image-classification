@@ -6,6 +6,8 @@ Based on work by [Hasib Zunair](https://keras.io/examples/vision/3D_image_classi
 
 ### Inference Demo
 
+![Demo Workflow](images/demo-workflow.jpg "Workflow")
+
 #### Server side configuration
 
 ```
@@ -36,6 +38,9 @@ opendatahub-operator-5b6cb986d-48zxr   1/1     Running   0          3m22s
 
 3) Deploy the ODH kfdef and wait for the operators and pods to become ready. This could take minutes or so. It may be helpful
 to open the OpenShift console to monitor the installation status of the operators.
+
+![Operators](images/operators.jpg "Operators")
+
 ```
 oc create -f 03-opendatahub-kfdef-seldon-prometheus-grafana.yaml
 
