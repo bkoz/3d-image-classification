@@ -10,17 +10,17 @@ Based on work by [Hasib Zunair](https://keras.io/examples/vision/3D_image_classi
 
 #### Server side configuration
 
-Perform the following steps using command line interface.
+Login to the [OpenShift Learning Portal](https://learn.openshift.com). Near the the bottom of the page, choose **OpenShift Playgrounds** -> **OpenShift 4.7 Playground**.
 
+Choose **Start Scenario** and perform the following steps using the command line interface.
+
+0) Clone this repo.
 ```
+git clone https://github.com/bkoz/3d-image-classification
 cd 3d-image-classification/resources
 ```
 
-Login to an OpenShift cluster as a cluster administrator or use the [OpenShift Learning Portal](https://learn.openshift.com)
-
-Visit https://learn.openshift.com and near the the bottom choose the **OpenShift Playgrounds** course then **OpenShift 4.7 Playground** scenario.
-
-1) Create project called `ml-mon`
+1) Create a project called `ml-mon`
 ```
 oc create -f 01-namespace.yaml   
 oc project ml-mon
