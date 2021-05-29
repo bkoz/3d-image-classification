@@ -29,9 +29,11 @@ oc project ml-mon
 2) Deploy the ODH operator and wait for it to become ready.
 ```
 oc create -f 02-odh-operator-subscription.yaml
-
+```
+```
 oc get pods -n openshift-operators
-
+```
+```
 NAME                                   READY   STATUS    RESTARTS   AGE
 opendatahub-operator-5b6cb986d-48zxr   1/1     Running   0          3m22s
 ```
@@ -43,7 +45,8 @@ to open the OpenShift console to monitor the installation status of the operator
 oc create -f 03-opendatahub-kfdef-seldon-prometheus-grafana.yaml
 
 oc get pods
-
+```
+```
 grafana-deployment-5f6949bc8-ww97f              1/1     Running   0          7m10s
 grafana-operator-cd65d6644-79mhv                1/1     Running   0          7m39s
 odh-dashboard-764cbcb544-n8ff6                  1/1     Running   0          16m
@@ -72,12 +75,15 @@ oc create -f 07-mymodel-seldon-deploy-from-quay.yaml
 
 ```
 oc get pods
-
+```
+```
 NAME                                            READY   STATUS    RESTARTS   AGE
 mymodel-mygroup-0-classifier-57647887d9-98qqb   2/2     Running   0          118s
-
+```
+```
 oc get svc
-
+```
+```
 NAME                         TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)             AGE
 mymodel-mygroup              ClusterIP   10.217.5.143   <none>        8000/TCP,5001/TCP   20s
 mymodel-mygroup-classifier   ClusterIP   10.217.4.127   <none>        9000/TCP            2m4s
@@ -110,7 +116,8 @@ Within 30 seconds or so there should be Seldon entries in the Prometheus databas
 
 ```
 curl -X GET $(oc get route mymodel-mygroup -o jsonpath='{.spec.host}')/prometheus
-
+```
+```
 seldon_api_executor_server_requests_seconds_sum{code="200",deployment_name="mymodel",method="post",predictor_name="mygroup",predictor_version="",service="predictions"} 4.714845908
 seldon_api_executor_server_requests_seconds_count{code="200",deployment_name="mymodel",method="post",predictor_name="mygroup",predictor_version="",service="predictions"} 5
 ```
