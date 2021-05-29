@@ -1,6 +1,6 @@
 # Classification of 3D Medical images 
 
-## A basic data science demo using OpenDataHub (ODH) and OpenShift Container Platform (OCP)
+## A data science demo using OpenDataHub (ODH) and the OpenShift Container Platform (OCP)
 
 Based on work by [Hasib Zunair](https://keras.io/examples/vision/3D_image_classification/)
 
@@ -10,15 +10,15 @@ Based on work by [Hasib Zunair](https://keras.io/examples/vision/3D_image_classi
 
 #### Server side configuration
 
+Perform the following steps using command line interface.
+
 ```
 cd 3d-image-classification/resources
 ```
 
-Login to an OpenShift cluster as a cluster administrator or use the (OpenShift Learning Portal)[https://learn.openshift.com]
+Login to an OpenShift cluster as a cluster administrator or use the [OpenShift Learning Portal](https://learn.openshift.com)
 
-Visit https://learn.openshift.com and near the the bottom choose the *OpenShift Playgrounds* course then *OpenShift 4.7 Playground* scenario.
-
-Perform the following steps using command line interface.
+Visit https://learn.openshift.com and near the the bottom choose the **OpenShift Playgrounds** course then **OpenShift 4.7 Playground** scenario.
 
 1) Create project called `ml-mon`
 ```
@@ -39,8 +39,6 @@ opendatahub-operator-5b6cb986d-48zxr   1/1     Running   0          3m22s
 3) Deploy the ODH kfdef and wait for the operators and pods to become ready. This could take minutes or so. It may be helpful
 to open the OpenShift console to monitor the installation status of the operators.
 
-![Operators](images/operators.jpg "Operators")
-
 ```
 oc create -f 03-opendatahub-kfdef-seldon-prometheus-grafana.yaml
 
@@ -55,6 +53,8 @@ prometheus-odh-monitoring-1                     2/2     Running   1          3m1
 prometheus-operator-578ccd6c45-dmfbg            1/1     Running   0          3m21s
 seldon-controller-manager-6d5d5d4d8-9pfhx       1/1     Running   0          7m37s
 ```
+
+![Operators](images/operators.jpg "Operators")
 
 4) Configure Prometheus
 5) Configure Grafana
@@ -119,15 +119,16 @@ Open The Prometheus and Grafana Dashboards to visualize the API activity.
 
 ## Developer Notes
 
-#### Building the Seldon deployer using s2i.
+#### Building the Seldon deployer container image using OpenShift's s2i workflow.
 
 #### Create and start a new build.
 
 ```
+cd 3d-image-classification
+
 oc new-build --strategy docker --docker-image registry.redhat.io/ubi8/python-36 --name mymodel -l app=mymodel --binary
 
 oc start-build mymodel --from-dir=. --follow
-
 ```
 
 Edit `mymodel-seldon-deploy.yaml` to match the environment and deploy.
