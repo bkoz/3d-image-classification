@@ -38,12 +38,13 @@ NAME                                   READY   STATUS    RESTARTS   AGE
 opendatahub-operator-5b6cb986d-48zxr   1/1     Running   0          3m22s
 ```
 
-3) Deploy the ODH kfdef and wait for the operators and pods to become ready. This could take minutes or so. It may be helpful
+3) Deploy the ODH kfdef and wait for all of the pods shown below to become ready. This could take 10 minutes or so. It may be helpful
 to open the OpenShift console to monitor the installation status of the operators.
 
 ```
 oc create -f 03-opendatahub-kfdef-seldon-prometheus-grafana.yaml
-
+```
+```
 oc get pods
 ```
 ```
