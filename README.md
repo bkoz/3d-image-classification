@@ -103,7 +103,7 @@ promhttp_metric_handler_requests_total{code="200"} 34
 
 ### Client Configuration
 
-- Login to JupyterHub
+- Login to OpenDataHub on the [Massachusetts Open Cloud](https://odh.operate-first.cloud/) and launch JupyterHub.
 - Start the JupyterHub server using the `s2i-generic-data-science` notebook image.
 - Create a terminal
 - Clone this github repo
