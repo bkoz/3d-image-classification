@@ -56,8 +56,7 @@ oc create -f 05-prediction-analytics-seldon-core-1.2.2.yaml
 oc create -f 06-seldon-mymodel-servicemonitor.yaml
 ```
 
-7) Create and wait for the classifier pods to become ready before creating the route in the next step. This is important
-because (2) services are created by the Seldon deployer.
+7) Deploy and wait for the classifier pod to become ready. Two services should be created by the Seldon deployer.
 
 ```
 oc create -f 07-mymodel-seldon-deploy-from-quay.yaml
@@ -91,9 +90,9 @@ promhttp_metric_handler_requests_total{code="200"} 34
 
 ### Client Configuration
 
-Login to JupyterHub
-- start the JupyterHub server using the `s2i-generic-data-science` notebook image.
-- create a terminal
+- Login to JupyterHub
+- Start the JupyterHub server using the `s2i-generic-data-science` notebook image.
+- Create a terminal
 - Clone this github repo
 - Run the `01-inference-3d-image-classification` notebook.
 - Find the notebook cell with `predict` function and modify the `url` variable to point to the route that was created.
