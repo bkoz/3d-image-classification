@@ -12,7 +12,11 @@ Based on work by [Hasib Zunair](https://keras.io/examples/vision/3D_image_classi
 cd 3d-image-classification/resources
 ```
 
-Login with admin privileges to an OpenShift cluster like https://learn.openshift.com
+Login to an OpenShift cluster as a cluster administrator or use the (OpenShift Learning Portal)[https://learn.openshift.com]
+
+Visit https://learn.openshift.com and near the the bottom choose the *OpenShift Playgrounds* course then *OpenShift 4.7 Playground* scenario.
+
+Perform the following steps using command line interface.
 
 1) Create project called `ml-mon`
 ```
@@ -30,8 +34,8 @@ NAME                                   READY   STATUS    RESTARTS   AGE
 opendatahub-operator-5b6cb986d-48zxr   1/1     Running   0          3m22s
 ```
 
-3) Deploy the ODH kfdef and wait for the operators and pods to become ready. This could take 8-10 minutes.
-
+3) Deploy the ODH kfdef and wait for the operators and pods to become ready. This could take minutes or so. It may be helpful
+to open the OpenShift console to monitor the installation status of the operators.
 ```
 oc create -f 03-opendatahub-kfdef-seldon-prometheus-grafana.yaml
 
@@ -57,7 +61,6 @@ oc create -f 06-seldon-mymodel-servicemonitor.yaml
 ```
 
 7) Deploy and wait for the classifier pod to become ready. Two services should be created by the Seldon deployer.
-
 ```
 oc create -f 07-mymodel-seldon-deploy-from-quay.yaml
 ```
@@ -81,7 +84,6 @@ oc create -f 08-mymodel-route.yaml
 ```
 
 Curl the prometheus endpoint and confirm it is able to scrape metrics from the classifier pod.
-
 ```
 curl -X GET $(oc get route mymodel-mygroup -o jsonpath='{.spec.host}')/prometheus
 
@@ -97,10 +99,9 @@ promhttp_metric_handler_requests_total{code="200"} 34
 - Run the `01-inference-3d-image-classification` notebook.
 - Find the notebook cell with `predict` function and modify the `url` variable to point to the route that was created.
   - `echo $(oc get route mymodel-mygroup -o jsonpath='{.spec.host}')/api/v1.0/predictions`
-- Run the notebook and make a few predictions.
+- Run the notebook and select a study to make a few predictions to trigger Seldon activity.
 
-Make a few predictions to trigger Seldon activity, wait 30 seconds, then try the same curl as above. There should be some
-Seldon entries now.
+Within 30 seconds or so there should be Seldon entries in the Prometheus database.
 
 ```
 curl -X GET $(oc get route mymodel-mygroup -o jsonpath='{.spec.host}')/prometheus
@@ -109,7 +110,7 @@ seldon_api_executor_server_requests_seconds_sum{code="200",deployment_name="mymo
 seldon_api_executor_server_requests_seconds_count{code="200",deployment_name="mymodel",method="post",predictor_name="mygroup",predictor_version="",service="predictions"} 5
 ```
 
-Open The Prometheus and Grafana Dashboards to view activity.
+Open The Prometheus and Grafana Dashboards to visualize the API activity.
 
 ## Developer Notes
 
