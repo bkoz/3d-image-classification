@@ -1,8 +1,8 @@
 # Classification of 3D Medical images 
 
-## A machine learning demo using OpenDataHub (ODH) and the OpenShift Container Platform (OCP)
-
 Based on work by [Hasib Zunair](https://keras.io/examples/vision/3D_image_classification/)
+
+## A machine learning demo using OpenDataHub (ODH) and the OpenShift Container Platform (OCP)
 
 ![Demo Workflow](images/demo-workflow.png "Workflow")
 
