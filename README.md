@@ -4,7 +4,7 @@
 
 Based on work by [Hasib Zunair](https://keras.io/examples/vision/3D_image_classification/)
 
-![Demo Workflow](images/demo-workflow.jpg "Workflow")
+![Demo Workflow](images/demo-workflow.png "Workflow")
 
 ### Server side configuration
 
