@@ -20,8 +20,7 @@ cd 3d-image-classification/resources
 
 1) Create a project called `ml-mon`
 ```
-oc create -f 01-namespace.yaml   
-oc project ml-mon
+oc new-project ml-mon
 ```
 
 2) Deploy the ODH operator and wait for it to become ready.
