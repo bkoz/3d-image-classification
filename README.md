@@ -1,4 +1,4 @@
-# Classification of 3D Medical images 
+# Classification of Pneumonia using 3D Medical Images 
 
 Based on work by [Hasib Zunair](https://keras.io/examples/vision/3D_image_classification/)
 
@@ -104,7 +104,7 @@ promhttp_metric_handler_requests_total{code="200"} 5
 ### Client Configuration
 
 - Login to OpenDataHub on the [Massachusetts Open Cloud](https://odh.operate-first.cloud/) and launch JupyterHub.
-- Start the JupyterHub server using the `s2i-generic-data-science` notebook image.
+- Start the JupyterHub server and choose the `Standard Data Science` notebook image.
 - Create a terminal
 - Clone this github repo
 - Run the `01-inference-3d-image-classification` notebook.
