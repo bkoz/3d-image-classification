@@ -154,4 +154,18 @@ To trigger a redeploy after a new build. This does not always work so the pod ma
 oc patch deployment <deployment-name> -p "{\"spec\": {\"template\": {\"metadata\": { \"labels\": {  \"redeploy\": \"$(date +%s)\"}}}}}"
 ```
 
+### Trouble Shooting
+
+```
+$ oc create -f resources/07-mymodel-seldon-deploy-from-quay.yaml
+Error from server (InternalError): error when creating "resources/07-mymodel-seldon-deploy-from-quay.yaml": Internal error occurred: failed calling webhook "v1.vseldondeployment.kb.io": Post "https://seldon-webhook-service.odh.svc:443/validate-machinelearning-seldon-io-v1-seldondeployment?timeout=30s": service "seldon-webhook-service" not found
+```
+
+This can happen after ODH has been re-installed into a differnent project. To fix it delete the old webhook.
+
+```
+oc get MutatingWebhookConfiguration,ValidatingWebhookConfiguration -A
+
+oc delete validatingwebhookconfiguration.admissionregistration.k8s.io/seldon-validating-webhook-configuration-odh
+```
 
