@@ -1,32 +1,22 @@
+#
+# Make an ML model prediction via REST
+#
+
 import os
 import zipfile
 import numpy as np
-import tensorflow as tf
 import logging
 import time
-from tensorflow import keras
-from tensorflow.keras import layers
+import urllib.request
 
 logging.basicConfig(level=logging.INFO)
-
-#
-# Load model from storage.
-#
-import requests
-url = "https://koz.s3.amazonaws.com/models/3d_image_classification.h5"
-model_file = '3d_image_classification.h5'
-
-filename = os.path.join(os.getcwd(), model_file)
-keras.utils.get_file(filename, url)
-
-model = keras.models.load_model(filename)
 
 #
 # Load volume data from storage.
 #
 url = "https://koz.s3.amazonaws.com/data/ct-data.zip"
 filename = os.path.join(os.getcwd(), "ct-data.zip")
-keras.utils.get_file(filename, url)
+urllib.request.urlretrieve(url, filename)
 
 # Unzip data in the newly created directory.
 with zipfile.ZipFile("ct-data.zip", "r") as z_fp:
@@ -47,7 +37,7 @@ import requests
 
 def predict(filename):
     #
-    # payload format
+    # REST payload format
     # payload = {"data": {"ndarray": X.tolist()} }
     #
     
@@ -56,15 +46,16 @@ def predict(filename):
     #
     v = read_nifti_file(filename)
 
-    # Local prediction.
-    prediction = model.predict(np.expand_dims(v, axis=0))[0]
-    logging.info(f'{filename} Local Prediction = {prediction[0]:.3f}')
-
     #
     # Prediction via REST.
     #
-    url = 'http://mymodel-mygroup-ml-mon.2886795286-80-hazel05.environments.katacoda.com/api/v1.0/predictions'
-    logging.info(f'Serializing and predicting volume {filename} via REST...')
+    #
+    # CHANGE hostname to reflect your cluster.
+    #
+    hostname = 'http://mymodel-mygroup-ml-mon.2886795275-80-hazel05.environments.katacoda.com' 
+    url = f'{hostname}/api/v1.0/predictions'
+    
+    logging.info(f'Serializing and predicting volume {filename} via REST at URL: {url}')
     payload = {"data": {"ndarray": v.tolist()} }
     try:
         t0 = time.time()
