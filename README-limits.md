@@ -41,4 +41,3 @@ repos:
     uri: https://github.com/kubeflow/manifests/tarball/v1.3-branch
   - name: manifests
     uri: https://github.com/koz/odh-manifests/tarball/master
-  version: master
