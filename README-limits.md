@@ -2,6 +2,10 @@
 
 I had to bump the pod memory limits to 16Gi to train this model on an nvidia T4.
 
+Choose a large notebook size (8 cpus, 16GB memory)
+
+Using AWS g4dn.4xlarge does work for this data set. Still need to test g4dn.2xlarge.
+
 Details below.
 
 ```
