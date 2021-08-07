@@ -1,11 +1,10 @@
 # Pod Limits
 
-I had to bump the pod memory limits to 16Gi to train this model.
+I had to bump the pod memory limits to 16Gi to train this model on an nvidia T4.
 
 Details below.
 
 ```
-
 $ free -h
               total        used        free      shared  buff/cache   available
               Mem:           62Gi        16Gi        31Gi       168Mi        14Gi        46Gi
@@ -28,3 +27,14 @@ MiB Swap:      0.0 total,      0.0 free,      0.0 used.  47719.1 avail Mem
     357 1000740+  20   0   52064   4120   3456 R   0.0   0.0   0:00.00 top 
 ```
 
+Change the limits entry in the [configmap manifest](https://github.com/bkoz/odh-manifests/blob/master/jupyterhub/jupyterhub/base/jupyterhub-singleuser-profiles-sizes-configmap.yaml)
+
+
+The end of the ODH kfdef should look like:
+
+repos:
+  - name: kf-manifests
+    uri: https://github.com/kubeflow/manifests/tarball/v1.3-branch
+  - name: manifests
+    uri: https://github.com/koz/odh-manifests/tarball/master
+  version: master
