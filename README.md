@@ -1,5 +1,7 @@
 # Classification of Pneumonia using 3D Medical Images 
 
+![Slicer](images/slicer.jpg "Slicer")
+
 Based on work by [Hasib Zunair](https://keras.io/examples/vision/3D_image_classification/)
 
 ## A machine learning demo using OpenDataHub (ODH) and the OpenShift Container Platform (OCP)
@@ -23,19 +25,19 @@ cd 3d-image-classification/resources
 oc new-project ml-mon
 ```
 
-2) Deploy the ODH operator and wait for it to become ready.
+2) Deploy the ODH operator and wait for it to be running and ready.
 ```
 oc create -f 02-odh-operator-subscription.yaml
 ```
 ```
-oc get pods -n openshift-operators
+oc get pods -n openshift-operators -w
 ```
 ```
 NAME                                   READY   STATUS    RESTARTS   AGE
 opendatahub-operator-5b6cb986d-48zxr   1/1     Running   0          3m22s
 ```
 
-3) Deploy the ODH kfdef and wait for all of the pods shown below to become ready. This could take 10 minutes or more to complete. It may be helpful
+3) Deploy the ODH kfdef and wait for **all** of the pods shown below to become ready. This could take 10 minutes or more to complete. It may be helpful
 to open the OpenShift console to monitor the installation status of the operators.
 
 ```
@@ -161,7 +163,7 @@ $ oc create -f resources/07-mymodel-seldon-deploy-from-quay.yaml
 Error from server (InternalError): error when creating "resources/07-mymodel-seldon-deploy-from-quay.yaml": Internal error occurred: failed calling webhook "v1.vseldondeployment.kb.io": Post "https://seldon-webhook-service.odh.svc:443/validate-machinelearning-seldon-io-v1-seldondeployment?timeout=30s": service "seldon-webhook-service" not found
 ```
 
-This can happen after ODH has been re-installed into a differnent project. To fix it delete the old webhook.
+This can happen after ODH has been re-installed into a different project. To fix it delete the old webhook.
 
 ```
 oc get MutatingWebhookConfiguration,ValidatingWebhookConfiguration -A
