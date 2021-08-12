@@ -1,19 +1,19 @@
 # Pod Limits
 
-I had to bump the pod memory limits to 16Gi to train this model on an nvidia T4.
+The pod memory limits need to be increased to 16Gi in order to train this model.
 
-Choose a large notebook size (8 cpus, 16GB memory)
+Choose a notebook size that provides at least a 16Gi memory limit or
+create a custom notebook container size using the configmap provided in the resources directory.
 
-Using AWS g4dn.4xlarge does work for this data set. Still need to test g4dn.2xlarge.
-
-Details below.
+Example
 
 ```
-$ free -h
-              total        used        free      shared  buff/cache   available
-              Mem:           62Gi        16Gi        31Gi       168Mi        14Gi        46Gi
-              Swap:            0B          0B          0B
+oc create -f resources/developer-jupyterhub-sizes.yml
+```
 
+Details
+
+```
 $ nvidia-smi|grep MiB
               | N/A   42C    P0    28W /  70W |   5060MiB / 15109MiB |      0%      Default |
 
@@ -30,14 +30,3 @@ MiB Swap:      0.0 total,      0.0 free,      0.0 used.  47719.1 avail Mem
     162 1000740+  20   0   17396   4064   3320 S   0.0   0.0   0:00.55 sh                                                       
     357 1000740+  20   0   52064   4120   3456 R   0.0   0.0   0:00.00 top 
 ```
-
-Change the limits entry in the [configmap manifest](https://github.com/bkoz/odh-manifests/blob/master/jupyterhub/jupyterhub/base/jupyterhub-singleuser-profiles-sizes-configmap.yaml)
-
-
-The end of the ODH kfdef should look like:
-
-repos:
-  - name: kf-manifests
-    uri: https://github.com/kubeflow/manifests/tarball/v1.3-branch
-  - name: manifests
-    uri: https://github.com/koz/odh-manifests/tarball/master
