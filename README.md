@@ -105,6 +105,12 @@ promhttp_metric_handler_requests_total{code="200"} 5
 
 ### Client Configuration
 
+Jupyter Notebook dependencies
+
+```  
+pip install tensorflow jupyterlab ipywidgets scipy
+```
+
 - Login to OpenDataHub on the [Massachusetts Open Cloud](https://odh.operate-first.cloud/) and launch JupyterHub.
 - Start the JupyterHub server and choose the `Standard Data Science` notebook image.
 - Create a terminal
