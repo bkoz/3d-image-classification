@@ -1,4 +1,5 @@
-FROM image-registry.openshift-image-registry.svc:5000/openshift/python-36
+# FROM image-registry.openshift-image-registry.svc:5000/openshift/python-36
+FROM registry.access.redhat.com/ubi8/python-36:1-170.1648121369 
 USER root
 COPY . /app
 WORKDIR /app

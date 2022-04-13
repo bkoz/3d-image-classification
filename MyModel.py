@@ -1,4 +1,5 @@
 import tensorflow
+from tensorflow import keras
 from keras.models import load_model
 import os
 from os import environ
@@ -28,7 +29,7 @@ class MyModel:
         #
         # Load model from an http server.
         #
-        url = "https://koz.s3.amazonaws.com/models/3d_image_classification.h5"
+        url = "https://koz-models.s3.us-east-2.amazonaws.com/3d_image_classification.h5"
         home = os.environ['HOME']
         model_file = f'{home}/3d_image_classification.h5'
         print(f'********************* tensorflow version: {tensorflow.__version__} *************************')
