@@ -14,7 +14,7 @@ logging.basicConfig(level=logging.INFO)
 #
 # Load volume data from storage.
 #
-url = "https://koz.s3.amazonaws.com/data/ct-data.zip"
+url = "https://koz-models.s3.us-east-2.amazonaws.com/ct-data.zip"
 filename = os.path.join(os.getcwd(), "ct-data.zip")
 urllib.request.urlretrieve(url, filename)
 
@@ -52,7 +52,7 @@ def predict(filename):
     #
     # CHANGE hostname to reflect your cluster.
     #
-    hostname = 'http://mymodel-mygroup-bk-odh.apps.ocp.d1db.sandbox1682.opentlc.com'
+    hostname = 'http://mymodel-mygroup-bk-models.apps.cluster-cghmd.cghmd.sandbox879.opentlc.com'
     url = f'{hostname}/api/v1.0/predictions'
     
     logging.info(f'Serializing and predicting volume {filename} via REST at URL: {url}')
