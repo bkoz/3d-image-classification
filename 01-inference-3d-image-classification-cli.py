@@ -16,7 +16,9 @@ logging.basicConfig(level=logging.INFO)
 #
 url = "https://koz-models.s3.us-east-2.amazonaws.com/ct-data.zip"
 filename = os.path.join(os.getcwd(), "ct-data.zip")
+logging.info(f'Loading {url}')
 urllib.request.urlretrieve(url, filename)
+logging.info(f'Loaded {url}')
 
 # Unzip data in the newly created directory.
 with zipfile.ZipFile("ct-data.zip", "r") as z_fp:

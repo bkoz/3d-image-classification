@@ -10,7 +10,7 @@ spec:
       - spec:
           containers:
             - image: >-
-                image-registry.openshift-image-registry.svc:5000/ml-mon/mymodel
+                image-registry.openshift-image-registry.svc:5000/bk-models/mymodel
               name: classifier
       graph:
         children: []

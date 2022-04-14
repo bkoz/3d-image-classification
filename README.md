@@ -147,12 +147,27 @@ oc new-build --strategy docker --docker-image registry.redhat.io/ubi8/python-36 
 
 oc start-build mymodel --from-dir=. --follow
 ```
+```
+oc get is
 
-Edit `mymodel-seldon-deploy.yaml` to match the environment and deploy.
+NAME      IMAGE REPOSITORY                                                     TAGS     UPDATED
+mymodel   image-registry.openshift-image-registry.svc:5000/bk-models/mymodel   latest   7 seconds ago
+```
+
+Edit `mymodel-seldon-deploy.yaml` to confirm that the image location matches what the image stream reports. Then deploy the model server and wait for the pod to become ready.
 
 ```
 oc apply -f resources/mymodel-seldon-deploy.yaml
+```
+```
+oc get pods
 
+NAME                                            READY   STATUS              RESTARTS   AGE
+mymodel-mygroup-0-classifier-7c6b44569c-qmzk6   2/2     Running             0          61s
+```
+
+Expose the service
+```
 oc expose svc <svc-name>
 ```
 
