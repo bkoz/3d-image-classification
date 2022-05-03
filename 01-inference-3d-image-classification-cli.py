@@ -14,7 +14,7 @@ logging.basicConfig(level=logging.INFO)
 #
 # Load volume data from storage.
 #
-url = "https://koz-models.s3.us-east-2.amazonaws.com/ct-data.zip"
+url = "https://koz.s3.amazonaws.com/data/ct-data.zip"
 filename = os.path.join(os.getcwd(), "ct-data.zip")
 logging.info(f'Loading {url}')
 urllib.request.urlretrieve(url, filename)
