@@ -130,6 +130,19 @@ seldon_api_executor_server_requests_seconds_sum{code="200",deployment_name="mymo
 seldon_api_executor_server_requests_seconds_count{code="200",deployment_name="mymodel",method="post",predictor_name="mygroup",predictor_version="",service="predictions"} 5
 ```
 
+#### Install the Prometheus operator community operator
+
+Deploy an instance in this namespace.
+
+#### Do the same for Grafana
+
+[Configure Grafana to use the built-in Prometheus Data Source](https://www.redhat.com/en/blog/custom-grafana-dashboards-red-hat-openshift-container-platform-4)
+so a GPU dashboard can be created.
+
+Import the Seldon and GPU dashboards from the included json files.
+
+Follow
+
 Open The Prometheus and Grafana Dashboards to visualize the API activity.
 
 ![Grafana](images/grafana.jpg "Grafana")
