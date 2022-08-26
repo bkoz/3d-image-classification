@@ -139,7 +139,7 @@ Deploy an instance in this namespace.
 [Configure Grafana to use the built-in Prometheus Data Source](https://www.redhat.com/en/blog/custom-grafana-dashboards-red-hat-openshift-container-platform-4)
 so a GPU dashboard can be created.
 
-Import the Seldon and GPU dashboards from the included json files.
+Import the Seldon and [GPU](https://grafana.com/grafana/dashboards/12239-nvidia-dcgm-exporter-dashboard/) dashboards from the included json files.
 
 Follow
 
