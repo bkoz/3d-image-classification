@@ -1,22 +1,21 @@
-# Classification of Pneumonia using 3D Medical Images 
+# Classification of Pneumonia using 3D CT Images 
+
+This page is currently being updated and likely contains errata (8/29/2022)
 
 ![Slicer](images/slicer.jpg "Slicer")
 
 Based on work by [Hasib Zunair](https://keras.io/examples/vision/3D_image_classification/)
 
-## A machine learning demo using OpenDataHub (ODH) and the OpenShift Container Platform (OCP)
+## Tested Environment
+### OpenDataHub (ODH) v1.3
+### Openshift Container Platform (OCP) v4.10.26
 
 ![Demo Workflow](images/demo-workflow.png "Workflow")
 
 ### Server side configuration
 
-Login to the [OpenShift Learning Portal](https://learn.openshift.com). Near the the bottom of the page, choose **OpenShift Playgrounds** -> **OpenShift 4.7 Playground**.
-
-Choose **Start Scenario** and perform the following steps using the command line interface.
-
-0) Clone this repo.
+0) Change to the `resources` directory.
 ```
-git clone https://github.com/bkoz/3d-image-classification
 cd 3d-image-classification/resources
 ```
 
@@ -25,50 +24,40 @@ cd 3d-image-classification/resources
 oc new-project ml-mon
 ```
 
-2) Deploy the ODH operator and wait for it to be running and ready.
+2) Using the Openshift console, install the Seldon Core, Prometheus and Grafana community operators
+from OperatorHub in the `ml-mon` namespace.
+
+3) Create an instance of Prometheus and Grafana in the `ml-mon` namespace.
+
 ```
-oc create -f 02-odh-operator-subscription.yaml
-```
-```
-oc get pods -n openshift-operators -w
+oc get pods -n ml-mon -w
 ```
 ```
 NAME                                   READY   STATUS    RESTARTS   AGE
-opendatahub-operator-5b6cb986d-48zxr   1/1     Running   0          3m22s
-```
+$ oc get pods -n ml-mon             
 
-3) Deploy the ODH kfdef and wait for **all** of the pods shown below to become ready. This could take 10 minutes or more to complete. It may be helpful
-to open the OpenShift console to monitor the installation status of the operators.
-
-```
-oc create -f 03-opendatahub-kfdef-seldon-prometheus-grafana.yaml
-```
-```
-oc get pods
-```
-```
-grafana-deployment-5f6949bc8-ww97f              1/1     Running   0          7m10s
-grafana-operator-cd65d6644-79mhv                1/1     Running   0          7m39s
-odh-dashboard-764cbcb544-n8ff6                  1/1     Running   0          16m
-odh-dashboard-764cbcb544-qfhkk                  1/1     Running   0          16m
-prometheus-odh-monitoring-0                     2/2     Running   1          3m12s
-prometheus-odh-monitoring-1                     2/2     Running   1          3m11s
-prometheus-operator-578ccd6c45-dmfbg            1/1     Running   0          3m21s
-seldon-controller-manager-6d5d5d4d8-9pfhx       1/1     Running   0          7m37s
+NAME                                                   READY   STATUS    RESTARTS   AGE
+grafana-deployment-8fbf7c944-7895m                     1/1     Running   0          5h35m
+grafana-operator-controller-manager-6ff698d9fc-xvk28   2/2     Running   0          5h35m
+prometheus-example-0                                   2/2     Running   0          5h35m
+prometheus-operator-7b9ccd45c6-7v8td                   1/1     Running   0          5h35m
 ```
 
 ![Operators](images/operators.jpg "Operators")
 
-4) Configure Prometheus
-5) Configure Grafana
-6) Create a Service Monitor 
+4) Create a Prometheus Service Monitor 
+5) Login to the Grafana console. The username and password can be obtained from the
+`grafana-admin-credentials` secret.
+6) Within Grafana, configure a Prometheus data source
+7) Import the Seldon dashboard from the `resources/seldon-dashboard.json` file.
+
 ```
 oc create -f 04-grafana-prometheus-datasource.yaml             
 oc create -f 05-prediction-analytics-seldon-core-1.2.2.yaml
 oc create -f 06-seldon-mymodel-servicemonitor.yaml
 ```
 
-7) Deploy and wait for the classifier pod to become ready. Two services should be created by the Seldon deployer.
+7) Deploy and wait for the Seldon classifier pod to become ready. Two services should be created by the Seldon deployer.
 ```
 oc create -f 07-mymodel-seldon-deploy-from-quay.yaml
 ```
@@ -89,7 +78,7 @@ mymodel-mygroup              ClusterIP   10.217.5.143   <none>        8000/TCP,5
 mymodel-mygroup-classifier   ClusterIP   10.217.4.127   <none>        9000/TCP            2m4s
 ```
 
-8) Create the route.
+8) Create a route for the Seldon model server.
 ```
 oc create -f 08-mymodel-route.yaml
 ```
@@ -103,7 +92,7 @@ curl -X GET $(oc get route mymodel-mygroup -o jsonpath='{.spec.host}')/prometheu
 promhttp_metric_handler_requests_total{code="200"} 5
 ```
 
-### Client Configuration
+### OpenDataHub and Jupyter Client Configuration
 
 Jupyter Notebook dependencies
 
