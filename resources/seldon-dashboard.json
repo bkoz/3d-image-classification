@@ -36,7 +36,7 @@
           "type": "row"
         },
         {
-          "content": "<div class=\"text-center dashboard-header\">\n  <span>Seldon Deploy Prediction API Dashboard</span>\n</div>",
+          "content": "<div class=\"text-center dashboard-header\">\n  <span>Seldon Prediction API Dashboard</span>\n</div>",
           "datasource": null,
           "gridPos": {
             "h": 2,

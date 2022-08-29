@@ -54,7 +54,7 @@ def predict(filename):
     #
     # CHANGE hostname to reflect your cluster.
     #
-    hostname = 'http://mymodel-mygroup-bk-models.apps.cluster-cghmd.cghmd.sandbox879.opentlc.com'
+    hostname = 'http://mymodel-mygroup-ml-mon.apps.ocp.sandbox1911.opentlc.com'
     url = f'{hostname}/api/v1.0/predictions'
     
     logging.info(f'Serializing and predicting volume {filename} via REST at URL: {url}')
