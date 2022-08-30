@@ -7,7 +7,9 @@ This page is currently being updated and likely contains errata (8/30/2022)
 ## Introduction
 
 This repository represents a simple machine learning workflow consisting of
-data ingestion and preparation, model training, serving and monitoring.
+data ingestion and preparation, model training, serving and monitoring. It 
+can represent how computer decision support system can complement the
+diagnosis of pneumonia from a collection (a volume) of CT images.
 
 It is based on work by [Hasib Zunair.](https://keras.io/examples/vision/3D_image_classification/)
 
