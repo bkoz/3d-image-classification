@@ -1,10 +1,26 @@
 # Classification of Pneumonia using 3D CT Images 
 
-This page is currently being updated and likely contains errata (8/29/2022)
+This page is currently being updated and likely contains errata (8/30/2022)
 
 ![Slicer](images/slicer.jpg "Slicer")
 
-Based on work by [Hasib Zunair](https://keras.io/examples/vision/3D_image_classification/)
+## Introduction
+
+This repository represents a simple machine learning workflow consisting of
+data ingestion and preparation, model training, serving and monitoring.
+
+It is based on work by [Hasib Zunair.](https://keras.io/examples/vision/3D_image_classification/)
+
+### Technologies Used
+- Openshift
+- OpenDataHub
+- Jupyter Notebooks with iPyWidgets
+- Numpy
+- Tensorflow
+- Python requests library
+- Seldon Core
+- Prometheus
+- Grafana
 
 ## Tested Environment
 ### OpenDataHub (ODH) v1.3
@@ -12,7 +28,10 @@ Based on work by [Hasib Zunair](https://keras.io/examples/vision/3D_image_classi
 
 ![Demo Workflow](images/demo-workflow.png "Workflow")
 
-### Server side configuration
+# Setup and Configuration
+
+### Openshift
+#### Model Server side 
 
 0) Change to the `resources` directory.
 ```
@@ -24,11 +43,17 @@ cd 3d-image-classification/resources
 oc new-project ml-mon
 ```
 
-2) Using the Openshift console, install the Seldon Core, Prometheus and Grafana community operators
-from OperatorHub in the `ml-mon` namespace.
+2) Using the Openshift console UI, install an instance the following community operators from OperatorHub into the `ml-mon`.
+
+- OpenDataHub
+  - JupyterHub, S3, ODH Dashboard
+- Seldon Core (`openshift-operators` namespace)
+- Prometheus
+- Grafana
 
 3) Create an instance of Prometheus and Grafana in the `ml-mon` namespace.
 
+Expected Output
 ```
 oc get pods -n ml-mon -w
 ```
