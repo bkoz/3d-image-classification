@@ -110,19 +110,16 @@ prometheus-operator-7b9ccd45c6-7v8td                   1/1     Running   0      
 
 ![Operators](images/operators.jpg "Operators")
 
-4) Create a Prometheus Service Monitor 
+4) Create a Prometheus Service Monitor
+```
+oc create -f 06-seldon-mymodel-servicemonitor.yaml
+```
 5) Login to the Grafana console. The username and password can be obtained from the
 `grafana-admin-credentials` secret.
 6) Within Grafana, configure a Prometheus data source
 7) Import the Seldon dashboard from the `resources/seldon-dashboard.json` file.
 
-```
-oc create -f 04-grafana-prometheus-datasource.yaml             
-oc create -f 05-prediction-analytics-seldon-core-1.2.2.yaml
-oc create -f 06-seldon-mymodel-servicemonitor.yaml
-```
-
-7) Deploy and wait for the Seldon classifier pod to become ready. Two services should be created by the Seldon deployer.
+7) Deploy the Seldon model server and wait for the classifier pod to become ready. Two services should be created by the Seldon deployer.
 ```
 oc create -f 07-mymodel-seldon-deploy-from-quay.yaml
 ```
