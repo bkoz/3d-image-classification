@@ -81,7 +81,7 @@ cd 3d-image-classification/resources
 oc new-project ml-mon
 ```
 
-2) Using the Openshift console UI, install an instance the following community operators from OperatorHub into the `ml-mon` namespace.
+2) Using the Openshift console UI, install an instance of the following community operators from OperatorHub into the `ml-mon` namespace.
 
 - OpenDataHub
   - JupyterHub, S3, ODH Dashboard
