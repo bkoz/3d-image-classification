@@ -56,8 +56,6 @@ Train a 17-layer, Convolutional Neural Network to predict the presence of COVID-
 ## Model Card
 ![Model card](images/model-card.png "Model")
 
-### Dataset
-
 - (200) COVID-19 related 3D CT image studies 
 - Each study contains 36-54 slices of 512x512 pixels (voxels) each.
 - Total size is ~2GB  (compressed)
