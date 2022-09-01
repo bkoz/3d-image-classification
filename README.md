@@ -4,7 +4,7 @@
 
 ## Introduction
 
-This repository represents a simple machine learning workflow consisting of
+This repository contains a simple machine learning workflow consisting of
 data ingestion and preparation, model training, serving and monitoring. It 
 represents how computer-aided diagnosis can be used for the prediction 
 of pneumonia from a collection (a volume) of CT images.
