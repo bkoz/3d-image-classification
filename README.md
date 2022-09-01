@@ -170,15 +170,31 @@ pip install tensorflow jupyterlab ipywidgets scipy
 
 Within 30 seconds or so there should be activity on the Seldon Grafana Dashboard.
 
+Optionally, [configure Grafana to watch Openshift's built-in Prometheus Data Source](https://www.redhat.com/en/blog/custom-grafana-dashboards-red-hat-openshift-container-platform-4)
+so a GPU dashboard can be created. This data source will scrape metrics from the NVIDA
+DCGM exporter.
 
-#### Install the Prometheus operator community operator
+Grant the Grafana service account name the `cluster-reader` role so it can use
+Openshift's Prometheus in the `openshift-monitoring` namespace.
 
-Deploy an instance in this namespace.
+```
+oc adm policy add-cluster-role-to-user cluster-monitoring-view -z grafana-service-account -n ml-mon
+```
 
-#### Do the same for Grafana
+Get the Prometheus token.
+```
+oc serviceaccounts get-token prometheus-k8s -n openshift-monitoring
+```
 
-[Configure Grafana to use the built-in Prometheus Data Source](https://www.redhat.com/en/blog/custom-grafana-dashboards-red-hat-openshift-container-platform-4)
-so a GPU dashboard can be created.
+Add this token to the example Grafana data source yaml.
+```
+httpHeaderValue1: 'Bearer ${BEARER_TOKEN}'
+```
+
+Create the data source object.
+```
+oc apply -f 03-prometheus-grafanadatasource.yaml
+```
 
 Import the Seldon and [GPU](https://grafana.com/grafana/dashboards/12239-nvidia-dcgm-exporter-dashboard/) dashboards from the included json files.
 
