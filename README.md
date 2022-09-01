@@ -1,7 +1,5 @@
 # Classification of Pneumonia using 3D CT Images 
 
-This page is currently being updated and likely contains errata (8/30/2022)
-
 ![Slicer](images/slicer.jpg "Slicer")
 
 ## Introduction
@@ -24,11 +22,49 @@ It is based on work by [Hasib Zunair.](https://keras.io/examples/vision/3D_image
 - Prometheus
 - Grafana
 
+### Relevant Files and Directories
+```
+├── 01-inference-3d-image-classification-cli.py        Python script for inferencing
+├── 01-inference-3d-image-classification.ipynb         Notebook script for inferencing
+├── 02-training-3d-image-classification.ipynb          Notebook script for training
+├── 02-training-3d-image-classification.py             Python script for training
+├── 3d_image_classification.h5                         Trained model artifact
+├── Dockerfile                                         For s2i builds
+├── MyModel.py                                         Seldon Model Server Code
+├── ct-data.zip                                        Validation data for inferencing
+├── requirements-notebook.txt
+├── requirements.txt
+└── resources                                          Kubernetes Objects
+    ├── 06-seldon-mymodel-servicemonitor.yaml
+    ├── 07-mymodel-seldon-deploy-from-quay.yaml
+    └── grafana-dashboards
+        ├── NVIDIA-DCGM-dashboard.json                 GPU Metrics
+        └── seldon-dashboard.json                      Model Server Metrics
+```
+
 ## Tested Environment
-### OpenDataHub (ODH) v1.3
+### OpenDataHub (ODH) v1.3 for JupyterHub support
 ### Openshift Container Platform (OCP) v4.10.26
 
+## Model Serving Workflow
 ![Demo Workflow](images/demo-workflow.png "Workflow")
+
+## Model Development and Training Workflow
+
+Train a 17-layer, Convolutional Neural Network to predict the presence of COVID-19 related pneumonia from 3D CT imagery.
+
+## Model Card
+![Model card](images/model-card.png "Model")
+
+### Dataset
+
+- (200) COVID-19 related 3D CT image studies 
+- Each study contains 36-54 slices of 512x512 pixels (voxels) each.
+- Total size is ~2GB  (compressed)
+- ~20 minutes to preprocess and train on an NVIDIA Tesla T4 GPU
+- ML framework: Keras/Tensorflow  
+
+[Data Source: Chest CT Scans with COVID-19 Related Findings](https://www.medrxiv.org/content/10.1101/2020.05.20.20100362v1).
 
 # Setup and Configuration
 
@@ -119,7 +155,7 @@ curl -X GET $(oc get route mymodel-mygroup -o jsonpath='{.spec.host}')/prometheu
 promhttp_metric_handler_requests_total{code="200"} 5
 ```
 
-### OpenDataHub and Jupyter Client Configuration
+## OpenDataHub and Jupyter Client Configuration
 
 Jupyter Notebook dependencies
 
@@ -127,24 +163,16 @@ Jupyter Notebook dependencies
 pip install tensorflow jupyterlab ipywidgets scipy
 ```
 
-- Login to OpenDataHub on the [Massachusetts Open Cloud](https://odh.operate-first.cloud/) and launch JupyterHub.
+- Login to OpenDataHub
 - Start the JupyterHub server and choose the `Standard Data Science` notebook image.
-- Create a terminal
 - Clone this github repo
 - Run the `01-inference-3d-image-classification` notebook.
 - Find the notebook cell with `predict` function and modify the `url` variable to point to the route that was created.
   - `echo $(oc get route mymodel-mygroup -o jsonpath='{.spec.host}')/api/v1.0/predictions`
 - Run the notebook and select a study to make a few predictions to trigger Seldon activity.
 
-Within 30 seconds or so there should be Seldon entries in the Prometheus database.
+Within 30 seconds or so there should be activity on the Seldon Grafana Dashboard.
 
-```
-curl -X GET $(oc get route mymodel-mygroup -o jsonpath='{.spec.host}')/prometheus
-```
-```
-seldon_api_executor_server_requests_seconds_sum{code="200",deployment_name="mymodel",method="post",predictor_name="mygroup",predictor_version="",service="predictions"} 4.714845908
-seldon_api_executor_server_requests_seconds_count{code="200",deployment_name="mymodel",method="post",predictor_name="mygroup",predictor_version="",service="predictions"} 5
-```
 
 #### Install the Prometheus operator community operator
 
@@ -157,13 +185,36 @@ so a GPU dashboard can be created.
 
 Import the Seldon and [GPU](https://grafana.com/grafana/dashboards/12239-nvidia-dcgm-exporter-dashboard/) dashboards from the included json files.
 
-Follow
-
 Open The Prometheus and Grafana Dashboards to visualize the API activity.
 
 ![Grafana](images/grafana.jpg "Grafana")
 
-## Developer Notes
+### Trouble Shooting
+
+### How to confirm that Proetheus is scraping metrics from Seldon.
+
+```
+curl -X GET $(oc get route mymodel-mygroup -o jsonpath='{.spec.host}')/prometheus
+```
+```
+seldon_api_executor_server_requests_seconds_sum{code="200",deployment_name="mymodel",method="post",predictor_name="mygroup",predictor_version="",service="predictions"} 4.714845908
+seldon_api_executor_server_requests_seconds_count{code="200",deployment_name="mymodel",method="post",predictor_name="mygroup",predictor_version="",service="predictions"} 5
+```
+
+```
+$ oc create -f resources/07-mymodel-seldon-deploy-from-quay.yaml
+Error from server (InternalError): error when creating "resources/07-mymodel-seldon-deploy-from-quay.yaml": Internal error occurred: failed calling webhook "v1.vseldondeployment.kb.io": Post "https://seldon-webhook-service.odh.svc:443/validate-machinelearning-seldon-io-v1-seldondeployment?timeout=30s": service "seldon-webhook-service" not found
+```
+
+This can happen after ODH has been re-installed into a different project. To fix it delete the old webhook.
+
+```
+oc get MutatingWebhookConfiguration,ValidatingWebhookConfiguration -A
+
+oc delete validatingwebhookconfiguration.admissionregistration.k8s.io/seldon-validating-webhook-configuration-odh
+```
+
+## Developer Notes (Optional)
 
 #### Building the Seldon deployer container image using OpenShift's s2i workflow.
 
@@ -205,19 +256,3 @@ To trigger a redeploy after a new build. This does not always work so the pod ma
 ```
 oc patch deployment <deployment-name> -p "{\"spec\": {\"template\": {\"metadata\": { \"labels\": {  \"redeploy\": \"$(date +%s)\"}}}}}"
 ```
-
-### Trouble Shooting
-
-```
-$ oc create -f resources/07-mymodel-seldon-deploy-from-quay.yaml
-Error from server (InternalError): error when creating "resources/07-mymodel-seldon-deploy-from-quay.yaml": Internal error occurred: failed calling webhook "v1.vseldondeployment.kb.io": Post "https://seldon-webhook-service.odh.svc:443/validate-machinelearning-seldon-io-v1-seldondeployment?timeout=30s": service "seldon-webhook-service" not found
-```
-
-This can happen after ODH has been re-installed into a different project. To fix it delete the old webhook.
-
-```
-oc get MutatingWebhookConfiguration,ValidatingWebhookConfiguration -A
-
-oc delete validatingwebhookconfiguration.admissionregistration.k8s.io/seldon-validating-webhook-configuration-odh
-```
-
