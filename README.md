@@ -89,7 +89,7 @@ oc new-project ml-mon
 - Grafana
 
 Seldon
-- Install the Seldon Core operator in the (`openshift-operators` namespace).
+- Install the Seldon Core operator in the (`openshift-operators`) namespace.
 
 3) Create an instance of Prometheus and Grafana in the `ml-mon` namespace.
 
