@@ -81,13 +81,15 @@ cd 3d-image-classification/resources
 oc new-project ml-mon
 ```
 
-2) Using the Openshift console UI, install an instance the following community operators from OperatorHub into the `ml-mon`.
+2) Using the Openshift console UI, install an instance the following community operators from OperatorHub into the `ml-mon` namespace.
 
 - OpenDataHub
   - JupyterHub, S3, ODH Dashboard
-- Seldon Core (`openshift-operators` namespace)
 - Prometheus
 - Grafana
+
+Seldon
+- Install the Seldon Core operator in the (`openshift-operators` namespace).
 
 3) Create an instance of Prometheus and Grafana in the `ml-mon` namespace.
 
