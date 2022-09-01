@@ -1,4 +1,4 @@
-# Classification of Pneumonia using 3D CT Images 
+# Visualization and Classification of Pneumonia using 3D CT Images 
 
 ![Slicer](images/slicer.jpg "Slicer")
 
@@ -24,8 +24,8 @@ It is based on work by [Hasib Zunair.](https://keras.io/examples/vision/3D_image
 
 ### Relevant Files and Directories
 ```
-├── 01-inference-3d-image-classification-cli.py        Python script for inferencing
-├── 01-inference-3d-image-classification.ipynb         Notebook script for inferencing
+├── 01-inference-3d-image-classification-cli.py        Python script forinferencing
+├── 01-inference-3d-image-classification.ipynb         Visualization and inferencing
 ├── 02-training-3d-image-classification.ipynb          Notebook script for training
 ├── 02-training-3d-image-classification.py             Python script for training
 ├── 3d_image_classification.h5                         Trained model artifact
