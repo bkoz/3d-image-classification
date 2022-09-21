@@ -87,7 +87,7 @@ oc new-project ml-mon
 - Grafana
 
 Seldon
-- Install the Seldon Core operator in the (`openshift-operators`) namespace.
+- Install the Seldon Core operator into all namespaces in the cluster (default).
 
 3) Create an instance of Prometheus and Grafana in the `ml-mon` namespace.
 
@@ -106,20 +106,42 @@ prometheus-example-0                                   2/2     Running   0      
 prometheus-operator-7b9ccd45c6-7v8td                   1/1     Running   0          5h35m
 ```
 
+Create routes for Prometheus and Grafana.
+```
+oc expose svc prometheus-operated
+oc expose svc grafana-service
+```
+
+Obtain the Grafana admin credentials to login to the Grafana console.
+```
+oc get secrets grafana-admin-credentials -o=jsonpath='{@.data.GF_SECURITY_ADMIN_USER}' | base64 --decode
+
+admin
+
+oc get secrets grafana-admin-credentials -o=jsonpath='{@.data.GF_SECURITY_ADMIN_PASSWORD}' | base64 --decode
+
+ABcdRqpfdsEfpg==
+```
+
 ![Operators](images/operators.jpg "Operators")
 
 4) Create a Prometheus Service Monitor
 ```
 oc create -f 06-seldon-mymodel-servicemonitor.yaml
+
+servicemonitor.monitoring.coreos.com/mymodel-mygroup created
 ```
 5) Login to the Grafana console. The username and password can be obtained from the
 `grafana-admin-credentials` secret.
-6) Within Grafana, configure a Prometheus data source
+6) Within Grafana, configure a Prometheus data source called `prometheus` with a URL of `prometheus-operated.ml-mon:9090`
+
 7) Import the Seldon dashboard from the `resources/seldon-dashboard.json` file.
 
 7) Deploy the Seldon model server and wait for the classifier pod to become ready. Two services should be created by the Seldon deployer.
 ```
 oc create -f 07-mymodel-seldon-deploy-from-quay.yaml
+
+seldondeployment.machinelearning.seldon.io/mymodel created
 ```
 
 ```
@@ -140,7 +162,7 @@ mymodel-mygroup-classifier   ClusterIP   10.217.4.127   <none>        9000/TCP  
 
 8) Create a route for the Seldon model server.
 ```
-oc create -f 08-mymodel-route.yaml
+oc expose svc mymodel-mygroup
 ```
 
 Curl the prometheus endpoint and confirm it is able to scrape metrics from the classifier pod.
