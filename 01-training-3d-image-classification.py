@@ -174,15 +174,21 @@ shape of 128x128x64. Rescale the raw HU values to the range 0 to 1.
 Lastly, split the dataset into train and validation subsets.
 """
 
+print("Read and process the CT scans")
+
 # Read and process the scans.
 # Each scan is resized across height, width, and depth and rescaled.
 abnormal_scans = np.array([process_scan(path) for path in abnormal_scan_paths])
 normal_scans = np.array([process_scan(path) for path in normal_scan_paths])
 
+print("Label the CT scans")
+
 # For the CT scans having presence of viral pneumonia
 # assign 1, for the normal ones assign 0.
 abnormal_labels = np.array([1 for _ in range(len(abnormal_scans))])
 normal_labels = np.array([0 for _ in range(len(normal_scans))])
+
+print("Split data for training and validation")
 
 # Split data in the ratio 70-30 for training and validation.
 x_train = np.concatenate((abnormal_scans[:70], normal_scans[:70]), axis=0)
@@ -365,6 +371,8 @@ model.summary()
 ## Train model
 """
 
+print("Compiling model...")
+
 # Compile model.
 initial_learning_rate = 0.0001
 lr_schedule = keras.optimizers.schedules.ExponentialDecay(
@@ -378,12 +386,14 @@ model.compile(
 
 # Define callbacks.
 checkpoint_cb = keras.callbacks.ModelCheckpoint(
-    "3d_image_classification", save_best_only=True
+    "3d_image_classification/1", save_best_only=True
 )
 early_stopping_cb = keras.callbacks.EarlyStopping(monitor="val_acc", patience=15)
 
+print("Training the model.")
+
 # Train the model, doing validation at the end of each epoch
-epochs = 5
+epochs = 1
 model.fit(
     train_dataset,
     validation_data=validation_dataset,
@@ -425,7 +435,9 @@ for i, metric in enumerate(["acc", "loss"]):
 """
 
 # Load best weights.
-model.load_weights("3d_image_classification.h5")
+# model.load_weights("3d_image_classification")
+model = keras.models.load_model("3d_image_classification")
+
 prediction = model.predict(np.expand_dims(x_val[0], axis=0))[0]
 scores = [1 - prediction[0], prediction[0]]
 
