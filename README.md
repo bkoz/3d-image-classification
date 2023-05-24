@@ -53,6 +53,11 @@ It is based on work by [Hasib Zunair.](https://keras.io/examples/vision/3D_image
 
 Train a 17-layer, Convolutional Neural Network to predict the presence of COVID-19 related pneumonia from 3D CT imagery.
 
+Build the training Python stack.
+
+```
+pip install pip tensorflow nibabel matplotlib -Uq
+```
 ## Model Card
 ![Model card](images/model-card.png "Model")
 
