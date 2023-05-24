@@ -436,7 +436,7 @@ for i, metric in enumerate(["acc", "loss"]):
 
 # Load best weights.
 # model.load_weights("3d_image_classification")
-model = keras.models.load_model("3d_image_classification")
+model = keras.models.load_model("3d_image_classification/1")
 
 prediction = model.predict(np.expand_dims(x_val[0], axis=0))[0]
 scores = [1 - prediction[0], prediction[0]]
